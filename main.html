@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Swagger Test Cases</title>
+<style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .swaggerUrlContainer {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2799a9;
+      font-size: 36px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #285d64;
+      font-size: 10px;
+      margin-top: 0;
+      margin-bottom: 50px;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .output {
+      flex: 1;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #333;
+      font-size: 18px;
+      margin-top: 0;
+    }
+
+    code {
+      display: block;
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .testCase {
+      margin-bottom: 10px;
+    }
+
+    .testCase strong {
+      color: #333;
+    }
+
+    .script {
+      margin-bottom: 10px;
+    }
+
+    .script code {
+      font-size: 12px;
+    }
+
+    .assertion {
+      margin-bottom: 10px;
+    }
+
+    .assertion code {
+      font-size: 14px;
+      background-color: #f2f2f2;
+    }
+
+    .swaggerUrlContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .swaggerUrlContainer label {
+      color: #333;
+      font-weight: bold;
+    }
+
+    .swaggerUrlContainer input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .swaggerUrlContainer button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .swagger-url-input {
+      width: 400px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .code-container {
+      position: relative;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f5f5f5;
+      margin-bottom: 10px;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+    }
+
+    .code-container textarea {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: transparent;
+      resize: none;
+    }
+
+    .swaggerUrlContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.swaggerUrlContainer label {
+  color: #333;
+  font-weight: bold;
+}
+
+.swaggerUrlContainer input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.swaggerUrlContainer .fetch-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.swaggerUrlContainer .fetch-button:hover {
+  background-color: #45a049;
+}
+
+    .copy-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #c6e8e6;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.fetch-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.fetch-button:hover {
+  background-color: #45a049;
+}
+
+    .operation {
+      color: darkblue;
+    }
+
+    .purple {
+      color: purple;
+    }
+
+  </style>
+ </head> 
+    <body>
+      <h1>Web Services: Test Generator</h1>
+      <h2>Powered by AI</h2>
+      <div class="swaggerUrlContainer">
+        <label for="swaggerUrl">Swagger URL:</label>
+        <input type="text" id="swaggerUrl" class="swagger-url-input" />
+        <button class="fetch-button" onclick="processSwaggerJson()">Analyse Swagger</button>
+      </div>
+      <div class="button-container">
+        <button class="tool-button active" data-tool="Postman" onclick="setTool('Postman')">Postman</button>
+        <button class="tool-button" data-tool="Java" onclick="setTool('Java')">Java</button>
+        <button class="tool-button" data-tool="JavaScript" onclick="setTool('JavaScript')">JavaScript</button>
+        <button class="tool-button" data-tool="C#" onclick="setTool('C#')">C#</button>
+      </div>
+  <div class="container">
+    <div class="output">
+      <h2>Test Cases:</h2>
+      <div id="testCases" class="code-container"></div>
+    </div>
+    <div class="output">
+      <h2>Scripts:</h2>
+      <div id="scripts" class="code-container"></div>
+    </div>
+    <div class="output">
+      <h2>Assertions:</h2>
+      <div id="assertions" class="code-container"></div>
+    </div>
+  </div>
+
+
+
+  <script>
+    function copyCode(containerId) {
+      const container = document.getElementById(containerId);
+      const textarea = document.createElement('textarea');
+      textarea.value = container.textContent;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      alert('Code copied to clipboard!');
+    }
+
+    let currentTool = 'Postman'; // Default tool
+
+function setTool(tool) {
+  // Update the current tool
+  currentTool = tool;
+
+  // Re-generate the scripts and assertions based on the selected tool
+  displayScripts(testCases);
+  displayAssertions(testCases);
+
+  // Update the active state of the tool buttons
+  const toolButtons = document.querySelectorAll('.tool-button');
+  toolButtons.forEach(button => {
+    if (button.getAttribute('data-tool') === tool) {
+      button.classList.add('active');
+    } else {
+      button.classList.remove('active');
+    }
+  });
+}
+
+    function processSwaggerJson() {
+      const swaggerUrl = document.getElementById('swaggerUrl').value;
+
+      fetch(swaggerUrl)
+        .then(response => response.json())
+        .then(data => {
+          const testCases = extractTestCases(data);
+          displayTestCases(testCases);
+          displayScripts(testCases);
+          displayAssertions(testCases);
+        })
+        .catch(error => {
+          // Display error message in a popup
+          alert("Couldn't parse the Swagger JSON. Please check the URL and try again.");
+          console.error('Error fetching or parsing Swagger JSON:', error);
+        });
+    }
+    
+
+    function extractTestCases(swaggerJson) {
+      const testCases = [];
+
+      for (const path in swaggerJson.paths) {
+        const methods = swaggerJson.paths[path];
+
+        for (const method in methods) {
+          const testCase = {};
+
+          const operation = methods[method];
+          const responses = operation.responses;
+
+          for (const responseCode in responses) {
+            const response = responses[responseCode];
+
+            if (response.content && response.content['application/json'] && 
+response.content['application/json'].example) {
+              const example = response.content['application/json'].example;
+              testCase[responseCode] = example;
+            }
+          }
+
+          if (Object.keys(testCase).length > 0) {   
+            const endpoint = method.toUpperCase() + ' ' + path;
+            testCases.push({ endpoint, cases: testCase });
+          }
+        }
+      }
+         
+      return testCases;
+    }
+
+    function displayTestCases(testCases) {
+  const testCasesElement = document.getElementById('testCases');
+  testCasesElement.innerHTML = '';
+
+  if (testCases.length === 0) {
+    testCasesElement.textContent = 'No test cases found.';
+    return;
+  }
+
+  testCases.forEach(testCase => {
+    const testCaseElement = document.createElement('div');
+    const endpoint = testCase.endpoint;
+    const operation = endpoint.split(' ')[0].toUpperCase();
+    const path = endpoint.substring(operation.length + 1);
+
+    testCaseElement.innerHTML = `<strong><span class="operation">${operation}</span> ${path}</strong>`;
+
+    const casesElement = document.createElement('ul');
+
+    for (const responseCode in testCase.cases) {
+      const example = testCase.cases[responseCode];
+      const caseItem = document.createElement('li');
+      const given = `<strong><span class="purple">Given</span></strong> <span class="keyword">${operation}</span> ${path}`;
+      const when = `<strong><span class="purple">When</span></strong> a request is made`;
+      const then = `<strong><span class="purple">Then</span></strong> expect ${responseCode} response: ${JSON.stringify(example)}`;
+      caseItem.innerHTML = `${given}<br>${when}<br>${then}`;
+      casesElement.appendChild(caseItem);
+    }
+
+    testCaseElement.appendChild(casesElement);
+    testCasesElement.appendChild(testCaseElement);
+  });
+
+  const testCasesCopyButton = document.createElement('button');
+  testCasesCopyButton.textContent = 'Copy Code';
+  testCasesCopyButton.className = 'copy-button';
+  testCasesCopyButton.addEventListener('click', function () {
+    copyCode('testCases');
+  });
+  testCasesElement.appendChild(testCasesCopyButton);
+}
+
+
+
+    function displayScripts(testCases) {
+      const scriptsElement = document.getElementById('scripts');
+      scriptsElement.innerHTML = '';
+
+      if (testCases.length === 0) {
+        scriptsElement.textContent = 'No test cases found.';
+        return;
+      }
+
+      testCases.forEach(testCase => {
+        const scriptElement = document.createElement('div');
+        const endpoint = testCase.endpoint;
+        const operation = endpoint.split(' ')[0].toUpperCase();
+        const path = endpoint.substring(operation.length + 1);
+
+        scriptElement.innerHTML = `<strong><span class="operation">${operation}</span> ${path}</strong>`;
+
+        const scriptText = document.createElement('pre');
+        scriptText.textContent = JSON.stringify(testCase.cases, null, 2);
+
+        scriptElement.appendChild(scriptText);
+        scriptsElement.appendChild(scriptElement);
+      });
+
+      
+    const scriptsCopyButton = document.createElement('button');
+    scriptsCopyButton.textContent = 'Copy Code';
+    scriptsCopyButton.className = 'copy-button';
+    scriptsCopyButton.addEventListener('click', function() {
+      copyCode('scripts');
+    });
+    scriptsElement.appendChild(scriptsCopyButton);
+    }
+
+function displayAssertions(testCases) {
+      const assertionsElement = document.getElementById('assertions');
+      assertionsElement.innerHTML = '';
+
+      if (testCases.length === 0) {
+        assertionsElement.textContent = 'No test cases found.';
+        return;
+      }
+
+      testCases.forEach(testCase => {
+        const assertionElement = document.createElement('div');
+        const endpoint = testCase.endpoint;
+        const operation = endpoint.split(' ')[0].toUpperCase();
+        const path = endpoint.substring(operation.length + 1);
+
+        assertionElement.innerHTML = `<strong><span class="operation">${operation}</span> ${path}</strong>`;
+
+        const assertionText = document.createElement('pre');
+        const exampleResponses = testCase.cases;
+
+        const assertions = [];
+
+        for (const responseCode in exampleResponses) {
+          const exampleResponse = exampleResponses[responseCode];
+          // Add your happy path assertion here based on the example response
+          const assertion = `Response ${responseCode}: 
+${JSON.stringify(exampleResponse)}`;
+          assertions.push(assertion);
+        }
+
+        assertionText.textContent = assertions.join('\n');
+
+        assertionElement.appendChild(assertionText);
+        assertionsElement.appendChild(assertionElement);
+      });
+
+      const assertionsCopyButton = document.createElement('button');
+    assertionsCopyButton.textContent = 'Copy Code';
+    assertionsCopyButton.className = 'copy-button';
+    assertionsCopyButton.addEventListener('click', function() {
+      copyCode('assertions');
+    });
+    assertionsElement.appendChild(assertionsCopyButton);
+    }
+  </script>
+</body>
+</html>
